@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.james2o.MealPrep"
     },
     "web": {
       "bundler": "metro",
@@ -29,6 +30,8 @@
     "plugins": [
       "expo-router"
     ],
+    
+
     "experiments": {
       "typedRoutes": true
     }
