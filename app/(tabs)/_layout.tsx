@@ -21,6 +21,14 @@ export default function TabsLayout() {
                 }}
             />
             <Tabs.Screen
+                name="shopping-list"
+                options={{
+                    title: 'Shopping List',
+                    tabBarIcon: ({ color }) => <FontAwesome size={28} name="list-alt" color={color} />,
+                    headerShown: false,
+                }}
+            />
+            <Tabs.Screen
                 name="profile"
                 options={{
                     title: 'Profile',

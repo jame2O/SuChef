@@ -5,7 +5,7 @@ import re
 import matplotlib.pyplot as plt
 import json
 
-COLLECTION_NAMES = [['november-recipes', 4], ['student-recipes', 5],['salad-recipes', 9], ['pasta-recipes', 5]]
+COLLECTION_NAMES = [['november-recipes', 2]]
 def scrape_bbc_links(collection_name, pages):
     links = []
     for i in range(1, pages+1):
@@ -61,15 +61,17 @@ def scrape_bbc_recipes(links):
             if ing.find('a') is not None:
                 ingredient["name"] = ing.find('a').text.strip()
                 if ing.contents[0] is not None and isinstance(ing.contents[0], str):
-                    ingredient["quantity"] = ing.contents[0].strip()
+                    quantity_data = ing.contents[0].strip()
+                    ingredient["quantity"] = extract_price_unit_quantity(quantity_data)
             elif len(ing.contents) > 2:
-                ingredient["quantity"] = ing.contents[0].strip()
+                quantity_data = ing.contents[0].strip()
+                ingredient["quantity"] = extract_price_unit_quantity(quantity_data)
                 if isinstance(ing.contents[2],str):
                     ingredient["name"] = ing.contents[2].strip()
             else:
                 ingredient["name"] = ing.contents[0].strip()
             recipe_data["ingredients"].append(ingredient)
-            
+        
         ## Method info
         step_count = 1
         method_html = soup.find('ul', class_="method-steps__list")
@@ -81,18 +83,38 @@ def scrape_bbc_recipes(links):
             })
             step_count += 1
         data.append(recipe_data)
+  
     return data
         
-        
+def extract_price_unit_quantity(price_string):
+    # Define the regular expression pattern
+    if price_string == None:
+        return None
+    pattern = r'([\d]+)(?:\s)*(lb|ml|g|kg|tsp|tbsp|oz|l|fl\.oz|fl oz|floz)'
+    # Search for the pattern in the price string
+    match = re.search(pattern, price_string)
+    
+    if match:
+        quantity = int(match.group(1))
+        unit = (match.group(2))
+        return {
+            "quantity": quantity,
+            "unit": unit
+        }
+    else:
+        return price_string
+
+    
 if __name__ == '__main__':
     total_data = []
     for names in COLLECTION_NAMES:
         links = scrape_bbc_links(names[0], names[1])
         next_data = scrape_bbc_recipes(links)
         total_data.append({
+            "source": "bbc_good_food",
             "collection": names[0],
             "data": next_data
         })
         
-    with open(f'yummers.json', 'w') as f:
+    with open(f'./api/data/test_data.json', 'w') as f:
         json.dump(total_data, f, indent=4)
