@@ -4,8 +4,12 @@ import pandas as pd
 import re
 import matplotlib.pyplot as plt
 import json
+import unicodedata
 
 COLLECTION_NAMES = [['november-recipes', 2]]
+fraction_chars = {'\u00BD', '\u00BC', '\u00BE', '\u2150', '\u2151', '\u2152', '\u2153', '\u2154', 
+                  '\u2155', '\u2156', '\u2157', '\u2158', '\u2159', '\u215A', '\u215B', '\u215C', 
+                  '\u215D', '\u215E'}
 def scrape_bbc_links(collection_name, pages):
     links = []
     for i in range(1, pages+1):
@@ -58,6 +62,7 @@ def scrape_bbc_recipes(links):
             # Split up ingreditent into quantity & unit, name & notes if any
             if ing.find('div', class_='ingredients-list__item-note') is not None:
                 ingredient["notes"] = ing.find('div', class_='ingredients-list__item-note').text.strip()
+                
             if ing.find('a') is not None:
                 ingredient["name"] = ing.find('a').text.strip()
                 if ing.contents[0] is not None and isinstance(ing.contents[0], str):
@@ -83,27 +88,50 @@ def scrape_bbc_recipes(links):
             })
             step_count += 1
         data.append(recipe_data)
-  
+
     return data
-        
+
+# Extract quantity, unit & some cleaning (fractions)        
 def extract_price_unit_quantity(price_string):
     # Define the regular expression pattern
     if price_string == None:
         return None
-    pattern = r'([\d]+)(?:\s)*(lb|ml|g|kg|tsp|tbsp|oz|l|fl\.oz|fl oz|floz)'
+    pattern = r'((\d+(\.\d+)?)?([\u00BC-\u00BE\u2150-\u215E])?)(\s*)(lb|ml|g|kg|tsp|tbsp|oz|l|fl\.oz|fl oz|floz)?(?=\s|$)(\s*[a-zA-Z\s]*)?'
     # Search for the pattern in the price string
     match = re.search(pattern, price_string)
     
     if match:
-        quantity = int(match.group(1))
-        unit = (match.group(2))
+        quantity = (match.group(1))
+        unit = ""
+        if match.group(6):
+            unit = (match.group(6))
+        else:
+            unit = match.group(7)
+        if quantity is not None:
+            quantity = parse_quant(quantity)
+        
         return {
             "quantity": quantity,
             "unit": unit
         }
     else:
         return price_string
-
+def parse_quant(text):
+    parts = list(text)
+    for char in fraction_chars:
+        if char in parts:
+            # Just a fraction
+            if len(parts) == 1:
+                return unicodedata.numeric(parts[0])
+            else:
+                whole_n = int(parts[0])
+                fraction = unicodedata.numeric(parts[1])
+                return whole_n + fraction
+    if text.isnumeric():
+        return int(text)
+    else:
+        return text
+            
     
 if __name__ == '__main__':
     total_data = []
@@ -116,5 +144,5 @@ if __name__ == '__main__':
             "data": next_data
         })
         
-    with open(f'./api/data/test_data.json', 'w') as f:
+    with open(f'./MealPrep/api/data/test_data.json', 'w') as f:
         json.dump(total_data, f, indent=4)
