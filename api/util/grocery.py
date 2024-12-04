@@ -42,7 +42,7 @@ def get_all_named_item(item, stores):
                          'UnitSize': unitSize, 
                          'ImageURL': imgUrl}, 
                         ignore_index=True)
-    return tidy_data(data)
+    return tidy_data(df)
     
 
 def extract_price_unit_quantity(price_string):
@@ -64,8 +64,7 @@ def extract_price_unit_quantity(price_string):
     
     
 def tidy_data(data):
-    # Remove dupliactes
-    data = data.drop_duplicates()
+    # TODO
     return data
 
 

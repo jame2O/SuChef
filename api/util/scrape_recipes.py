@@ -144,5 +144,5 @@ if __name__ == '__main__':
             "data": next_data
         })
         
-    with open(f'./MealPrep/api/data/test_data.json', 'w') as f:
+    with open(f'./api/data/test_data.json', 'w') as f:
         json.dump(total_data, f, indent=4)
