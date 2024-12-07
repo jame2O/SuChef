@@ -6,9 +6,9 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [fontsLoaded, fontsError] = useFonts({
-    'Overpass': require('../assets/fonts/Overpass.ttf'),
-    'Overpass-Italic': require('../assets/fonts/Overpass-Italic.ttf'),
-    'Domine': require('../assets/fonts/Domine.ttf'),
+    'Overpass': require('./assets/fonts/Overpass.ttf'),
+    'Overpass-Italic': require('./assets/fonts/Overpass-Italic.ttf'),
+    'Domine': require('./assets/fonts/Domine.ttf'),
   })
   useEffect(() => {
     async function prepareApp() {

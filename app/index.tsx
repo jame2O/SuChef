@@ -18,7 +18,7 @@ export default function Index() {
       <View style={[styles.splashContainer]}>
         <Text style={styles.text}>SuChef is a meal planner which works around you.</Text>
         <Text>Set a budget, browse recipes, and let SuChef do the rest.</Text>
-        <Pressable onPress={() => router.replace("/(tabs)")}>
+        <Pressable hitSlop={20} onPress={() => router.replace("/(tabs)")}>
           <Text>Get Started</Text>
         </Pressable>
       </View>

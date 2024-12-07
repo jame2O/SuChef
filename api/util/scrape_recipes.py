@@ -30,6 +30,7 @@ def scrape_bbc_recipes(links):
             "name": None,
             "prep_time": None,
             "cook_time": None,
+            "imageUrl": None,
             "ingredients": [],
             "method": [],
         }
@@ -40,7 +41,12 @@ def scrape_bbc_recipes(links):
         recipe_name = soup.find('h1', class_='heading-1').text.strip()
         recipe_data["name"] = recipe_name
         ## Prep info
-
+        header_image_container = soup.find('div', class_="post-header__image-container")
+        if header_image_container is not None:
+            image_url = header_image_container.find('img', class_="image__img").attrs["src"]
+            recipe_data['imageUrl'] = image_url
+        else:
+            recipe_data['imageUrl'] = "n/a"
         time_elements = soup.find_all('time')
         for time_element in time_elements:
             if 'Prep:' in time_element.find_previous('span').find_previous('span').text:
@@ -49,6 +55,8 @@ def scrape_bbc_recipes(links):
                 recipe_data['cook_time'] = time_element.text.strip()
         
         data.append(recipe_data)
+        ## Image url
+        
         ## Ingredients info
         
         ing_list_html = soup.find('div', class_='tabbed-list__content').find('ul', class_="ingredients-list")        
