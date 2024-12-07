@@ -29,17 +29,20 @@ def get_all_named_item(item, stores):
         listPrice = price_div.contents[1].strip() if len(price_div.contents) > 1 else None
         unitPrice = price_div.find('div', class_='_per-item').text.strip() if price_div.find('div', class_='_per-item') else None
         price, quantity, unit = extract_price_unit_quantity(unitPrice)
-        unitSize = data.find('div', class_='_size').text
+        quant_tag = data.find('div', class_='_size')
+        quant_no = data.find('div', class_='_qty')
+        if quant_no is not None:
+            
+        else:
+            unitSize = quant_tag.text    
         
         df = df._append({'Brand': brand, 
                          'Description': desc, 
                          'ListPrice': listPrice, 
-                         'UnitPrice': {
-                             'price': price,
-                             'quanity': quantity,
-                             'unit': unit,
-                         },
-                         'UnitSize': unitSize, 
+                         'UnitQuantity': quantity,
+                         'UnitPrice': price,
+                         'UnitType': unit,
+                         'Quantity': unitSize, 
                          'ImageURL': imgUrl}, 
                         ignore_index=True)
     return tidy_data(df)
@@ -65,8 +68,38 @@ def extract_price_unit_quantity(price_string):
     
 def tidy_data(data):
     # TODO
-    return data
+    print (data)
+    if 
 
+def convert_units_to_metric(u1, u2):
+    # We only need to have tables for liquid and solid metric measurements
+    metric_liquid_factors = {
+        'ml': 1,
+        'l': 1000,
+        'tsp': 4.92892,
+        'tbsp': 14.7868,
+        'fl oz': 29.5735,
+        'cup': 240,
+        'pint': 473.176,
+        'quart': 946.353,
+        'gallon': 3785.41,
+    }
+    metric_solid_factors = {
+        'tsp': 4.92892,
+        'tbsp': 14.7868,
+        'oz': 29.5735,
+        'lb': 453.592,
+        'g': 1,
+        'kg': 1000
+    }
+    
+    if u2 in metric_liquid_factors.keys():
+        return metric_liquid_factors[u1]
+    
+    if u2 in metric_solid_factors.keys():
+        return metric_solid_factors[u1]
+    
+    raise ValueError(f"Unsupported units: {u1} or {u2}")
 
 if __name__ == '__main__':
     item_data = get_all_named_item('onions', [1,2,3,4])
