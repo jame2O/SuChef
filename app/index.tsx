@@ -1,46 +1,77 @@
 import { useEffect, useState} from 'react';
 import {useRouter} from 'expo-router';
-import { SafeAreaView, View, Text, Pressable, StyleSheet } from 'react-native';
+import { SafeAreaView, View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import Animated, { useSharedValue, withTiming, withSpring, useAnimatedStyle, runOnJS} from 'react-native-reanimated';
+
 
 export default function Index() {
   const router = useRouter();
-  const words = ["work", "workouts", "sports night", "uni life", "socials"]
   const opacity = useSharedValue(1);
-  const [word, setWord] = useState("life");
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
-
+  const logoImg = require('./assets/images/logo.png')
   return (
     <SafeAreaView style={styles.container}>
-      <View style={[styles.splashContainer]}>
-        <Text style={styles.text}>SuChef is a meal planner which works around you.</Text>
-        <Text>Set a budget, browse recipes, and let SuChef do the rest.</Text>
-        <Pressable hitSlop={20} onPress={() => router.replace("/(tabs)")}>
-          <Text>Get Started</Text>
-        </Pressable>
+      <View style={styles.headingContainer}>
+        <Image style={styles.logoImage} source={logoImg}/>
+        <Text style={styles.heading}>SuChef</Text>
+        
       </View>
+      <View>
+        <Text style={styles.subheading}>Take back control of your food spending, without the compromise.</Text>
+      </View>
+      <Pressable 
+          hitSlop={20} 
+          onPress={() => router.replace("/(tabs)")}
+          style={styles.startButtonContainer}
+        >
+          <Text style={styles.buttonLabel}>Get Started</Text>
+        </Pressable>
     </SafeAreaView>
   );
-  
 }
 const styles = StyleSheet.create({
   
   container: {
     flex: 1,
-    padding: 30,
-    alignContent: "center",
-    alignItems: "center",
+    marginTop: 80,
+    marginHorizontal: 30,
   },
-  splashContainer: {
-    borderRadius: 10,
-    padding: 10,
+  headingContainer: {
+    flexDirection: 'row',
+    paddingRight: 10,
+    alignItems: 'center'
   },
-  text: {
+  logoImage: {
+    width: 50,
+    aspectRatio: 1,
+    marginRight: 10,
+  },
+  heading: {
     fontFamily: 'Domine',
     fontSize: 50,
   },
+  subheading: {
+    marginTop: 20,
+    fontFamily: 'Overpass',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center'
+  },
+  startButtonContainer: {
+    marginTop: 20,
+    borderRadius: 5,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    width: '50%'
+  },
+  buttonLabel: {
+    fontFamily: 'Overpass',
+    fontSize: 16,
+    padding: 5,
+    textAlign: 'center'
+  }
 })
 

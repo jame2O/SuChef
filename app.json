@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "MealPrep",
-    "slug": "MealPrep",
+    "name": "SuChef",
+    "slug": "SuChef",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./app/assets/icons/icon.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./app/assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,10 +17,10 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./app/assets/icons/icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.james2o.MealPrep"
+      "package": "com.james2o.SuChef"
     },
     "web": {
       "bundler": "metro",
