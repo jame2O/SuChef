@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable, Image, Dimensions } from "react-native";
-import { RecipeItem } from '../../util/Types'
+import { RecipeItem } from '../../../util/Types'
 export default function RecipeCard({onPress, item}: {onPress: () => void, item: RecipeItem}) {
     const screenWidth = Dimensions.get('window').width;
     const cardWidth = (screenWidth / 2) - 40; // Adjust width to take up half the screen width minus padding

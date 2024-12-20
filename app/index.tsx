@@ -2,7 +2,8 @@ import { useEffect, useState} from 'react';
 import {useRouter} from 'expo-router';
 import { SafeAreaView, View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import Animated, { useSharedValue, withTiming, withSpring, useAnimatedStyle, runOnJS} from 'react-native-reanimated';
-
+import { colours } from '@/util/colours';
+import StartButton from './components/onboarding/StartButton';
 
 export default function Index() {
   const router = useRouter();
@@ -11,13 +12,27 @@ export default function Index() {
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
   }));
-  const logoImg = require('./assets/images/logo.png')
+  const logoImg = require('../assets/images/logo.png')
   return (
+    <View style={{backgroundColor: colours.cream, flex: 1}}>
+      <View style={styles.container}>
+        <View style={styles.headingContainer}>
+          <Image style={styles.logoImage} source={logoImg}/>
+          <Text style={styles.heading}>SuChef</Text>
+        </View>
+        <View>
+          <Text style={styles.subheading}>Meal planning, made simple</Text>
+        </View>
+        <View>
+          <StartButton onPress={() => alert("Clicked")}/>
+        </View>
+      </View>
+    </View>
+    /*
     <SafeAreaView style={styles.container}>
       <View style={styles.headingContainer}>
         <Image style={styles.logoImage} source={logoImg}/>
         <Text style={styles.heading}>SuChef</Text>
-        
       </View>
       <View>
         <Text style={styles.subheading}>Take back control of your food spending, without the compromise.</Text>
@@ -30,48 +45,41 @@ export default function Index() {
           <Text style={styles.buttonLabel}>Get Started</Text>
         </Pressable>
     </SafeAreaView>
+    */
   );
 }
 const styles = StyleSheet.create({
   
   container: {
-    flex: 1,
-    marginTop: 80,
+    marginTop: 50,
     marginHorizontal: 30,
+
   },
   headingContainer: {
     flexDirection: 'row',
     paddingRight: 10,
-    alignItems: 'center'
+    alignItems: 'center',
+
   },
   logoImage: {
-    width: 50,
+    width: 35,
     aspectRatio: 1,
     marginRight: 10,
   },
   heading: {
-    fontFamily: 'Domine',
-    fontSize: 50,
+    fontFamily: 'Montserrat',
+    fontSize: 35,
   },
   subheading: {
-    marginTop: 20,
-    fontFamily: 'Overpass',
-    fontSize: 30,
-    fontWeight: 'bold',
-    textAlign: 'center'
+    marginTop: 50,
+    marginHorizontal: 10,
+    fontFamily: 'Hind-Bold',
+    fontSize: 40,
+    textAlign: 'center',
   },
-  startButtonContainer: {
-    marginTop: 20,
-    borderRadius: 5,
-    borderColor: '#ccc',
-    borderWidth: 1,
-    width: '50%'
-  },
-  buttonLabel: {
-    fontFamily: 'Overpass',
-    fontSize: 16,
-    padding: 5,
-    textAlign: 'center'
+  label: {
+    color: colours.grey,
+    
   }
 })
 

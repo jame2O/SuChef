@@ -2,7 +2,7 @@ import { View, StyleSheet, Text, TextInput, FlatList } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import RecipeCard from "../components/browse/RecipeCard";
 import test_data from '../../api/data/test_data.json'
-import { RecipeItem } from "../util/Types";
+import { RecipeItem } from "../../util/Types";
 
 let test_item: RecipeItem[] = test_data[0].data
 

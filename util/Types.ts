@@ -1,6 +1,6 @@
 
 export type RecipeItem = {
-    name: string 
+    name: string, 
     prep_time: string | null,
     cook_time: string | null,
     ingredients: 
@@ -13,9 +13,22 @@ export type RecipeItem = {
             notes: string | null
         }[]
     
-    imageUrl: string 
+    image_url: string 
     method: {
         step: number
         text: string | null
     }[] | null
+}
+
+export type Grocery = {
+    brand: string,
+    name: string,
+    list_price: string,
+    unit_price: {
+        price: number,
+        quantity: number,
+        unit: string,
+    },
+    image_url: string,
+    unit_size: string
 }
