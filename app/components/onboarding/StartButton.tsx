@@ -2,7 +2,7 @@ import { Pressable, View, Text, StyleSheet } from "react-native";
 import { colours } from "@/util/colours";
 export default function StartButton({onPress}: {onPress: () => void}) {
     return (
-        <Pressable style={styles.buttonContainer}>
+        <Pressable onPress={onPress} style={styles.buttonContainer}>
             <Text style={styles.label}>Get Started</Text>
         </Pressable>
     )

@@ -8,7 +8,7 @@ export default function RecipeCard({onPress, item}: {onPress: () => void, item: 
             onPress={onPress}>
             <View style={[styles.container, { width: cardWidth }]}>
                 <Image
-                    src={item.imageUrl}
+                    src={item.image_url}
                     style={styles.image}
                 />
                 <Text style={styles.label}>{item.name}</Text>

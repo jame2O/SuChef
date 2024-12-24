@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 import re
-import matplotlib.pyplot as plt
 import json
 import unicodedata
 
@@ -30,7 +29,7 @@ def scrape_bbc_recipes(links):
             "name": None,
             "prep_time": None,
             "cook_time": None,
-            "imageUrl": None,
+            "image_url": None,
             "ingredients": [],
             "method": [],
         }
@@ -44,9 +43,9 @@ def scrape_bbc_recipes(links):
         header_image_container = soup.find('div', class_="post-header__image-container")
         if header_image_container is not None:
             image_url = header_image_container.find('img', class_="image__img").attrs["src"]
-            recipe_data['imageUrl'] = image_url
+            recipe_data['image_url'] = image_url
         else:
-            recipe_data['imageUrl'] = "n/a"
+            recipe_data['image_url'] = "n/a"
         time_elements = soup.find_all('time')
         for time_element in time_elements:
             if 'Prep:' in time_element.find_previous('span').find_previous('span').text:

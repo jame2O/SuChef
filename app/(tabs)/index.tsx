@@ -1,80 +1,58 @@
-import { Button, Pressable, Text, View, StyleSheet, ScrollView} from "react-native";
-import { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-export default function Index() {
-  const link = "https://8703-92-236-107-198.ngrok-free.app"
-  const [data, setData] = useState([])
-  const [input, setInput] = useState('') 
-  const getData = async (input: string) => {
-    const response = await fetch(`${link}/scrape`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        item: `${input}`,
-        stores: [2,1],
-      }),
-    }).catch((error) => {
-      alert(error)
-    })
-    if (response) {
-      const result = await response.json()
-      setData(result)
-    }
-  }
-  const getRecipes = async () => {
-    const response = await fetch(`${link}/get_recipes`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    }).catch((error) => {
-      alert(error)
-    })
-    if (response) {
-      const result = await response.json()
-      console.log(response)
-      setData(result)
-  }  
-}
-  return (
-    <SafeAreaView
-      style={styles.container}
-    >
-      <Text>Welcome!</Text>
-      <Pressable onPress={() => getData("milk")}>
-        <Text>Get Data</Text>
-        
-      </Pressable>
-      <Pressable onPress={() => getRecipes()}>
-        <Text>Get Recipes</Text>
-        
-      </Pressable>
-      <ScrollView>
-            <Text style={styles.text}>Items</Text>
-            {data.map((item: any, index: number) => (
-              <View key={index}>
-                <Text>{item.Brand}</Text>
-                <Text>{item.Description}</Text>
-                <Text>{item.ListPrice}</Text>
-                <Text>{item.UnitPrice}</Text>
-              </View>
-            ))}
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
+import { colours } from "@/util/colours";
+import { View, Text, StyleSheet, SafeAreaView } from "react-native";
+import LocationPicker from "../components/home/LocationPicker";
+import * as Location from 'expo-location'
+import { useState, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+export default function Index() {
+    const [location, setLocation] = useState<Location.LocationObject | null>(null);
+    const [address, setAddress] = useState<Location.LocationGeocodedAddress | null>(null);
+    return (
+        <SafeAreaView style={{backgroundColor: colours.cream, flex: 1}}>
+            <View style={styles.container}>
+                <View style={styles.top_bar}>
+                    <LocationPicker location={location} setLocation={setLocation}/>
+                    <Text style={styles.heading}>Welcome back!</Text>
+                </View>
+                <View style={styles.divider} />
+            </View>
+        </SafeAreaView>
+    )
+}
 
 const styles = StyleSheet.create({
- container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  text: {
-    fontFamily: 'Overpass',
-    fontSize: 50,
-  }
+    container: {
+        marginTop: 20,
+        marginHorizontal: 20,
+    },
+    top_bar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        padding: 5,
+        justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        width: '100%'
+    },
+    heading: {
+        fontFamily: 'Montserrat-Bold',
+        alignContent: 'flex-end',
+        textAlign: 'right',
+        fontSize: 25
+    },
+    divider: {
+        borderBottomColor: '#ccc',
+        borderBottomWidth: 1,
+        marginVertical: 10,
+    },
+    subheading: {
+        fontFamily: 'Hind-Bold',
+        textAlign: 'auto',
+        fontSize: 30
+    },
+    label: {
+        fontFamily: 'Hind',
+        color: '#ccc',
+        fontSize: 14
+    }
 })

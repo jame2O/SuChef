@@ -9,9 +9,6 @@ export default function Index() {
   const router = useRouter();
   const opacity = useSharedValue(1);
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    opacity: opacity.value,
-  }));
   const logoImg = require('../assets/images/logo.png')
   return (
     <View style={{backgroundColor: colours.cream, flex: 1}}>
@@ -24,28 +21,10 @@ export default function Index() {
           <Text style={styles.subheading}>Meal planning, made simple</Text>
         </View>
         <View>
-          <StartButton onPress={() => alert("Clicked")}/>
+          <StartButton onPress={() => router.replace('/(tabs)')}/>
         </View>
       </View>
     </View>
-    /*
-    <SafeAreaView style={styles.container}>
-      <View style={styles.headingContainer}>
-        <Image style={styles.logoImage} source={logoImg}/>
-        <Text style={styles.heading}>SuChef</Text>
-      </View>
-      <View>
-        <Text style={styles.subheading}>Take back control of your food spending, without the compromise.</Text>
-      </View>
-      <Pressable 
-          hitSlop={20} 
-          onPress={() => router.replace("/(tabs)")}
-          style={styles.startButtonContainer}
-        >
-          <Text style={styles.buttonLabel}>Get Started</Text>
-        </Pressable>
-    </SafeAreaView>
-    */
   );
 }
 const styles = StyleSheet.create({
