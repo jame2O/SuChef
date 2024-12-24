@@ -5,7 +5,8 @@ import { useState, useEffect } from "react";
 import { colours } from "@/util/colours";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function LocationPicker({location, setLocation}: {location: Location.LocationObject | null, setLocation: () => void}) {    const [address, setAddress] = useState<Location.LocationGeocodedAddress | null>(null)
+export default function LocationPicker({location, setLocation}: {location: Location.LocationObject | null, setLocation: (loc: Location.LocationObject) => void}) {    
+    const [address, setAddress] = useState<Location.LocationGeocodedAddress | null>(null)
     const storeData = async (key:string, value: string) => {
         try {
           await AsyncStorage.setItem(key, value);
@@ -37,10 +38,20 @@ export default function LocationPicker({location, setLocation}: {location: Locat
         storeData("location", locStr)
         return;
     }
+    const getAddress = async () => {
+        //Get new location
+        await getLocation();
+        if (location !== null) {
+            const cityLoc = await Location.reverseGeocodeAsync(location.coords);
+            if (cityLoc !== null) {
+                setAddress(cityLoc[0]);
+            }
+        }
+    }
     return (
         <View style={styles.container}>
-            <Pressable onPress={getLocation}>
-                <FontAwesome name="location-arrow" size={30} color="grey"/>
+            <Pressable onPress={getAddress}>
+                <FontAwesome name="location-arrow" size={25} color="grey"/>
             </Pressable>
             <Text style={styles.label}>Location: {address !== null ? `${address.city}, ${address.country}` : "N/A"}</Text>
         </View>
